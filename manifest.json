@@ -1,14 +1,21 @@
 {
   "manifest_version": 2,
-
   "name": "FourChrome",
   "description": "Adpearance Chrome extension for Google Ads",
   "version": "0.1",
-
   "browser_action": {
-    "default_icon": "images/icon.png"
+    "default_icon": "images/icon.png",
+    "default_title": "Adpearance Chrome Extension",
+    "default_popup": "popup.html"
   },
-
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "omnibox": {
+    "keyword" : "dapi"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -25,5 +32,9 @@
   ],
    "web_accessible_resources": [
     "images/*.png"
+  ],
+  "permissions": [
+    "tabs",
+    "management"
   ]
 }

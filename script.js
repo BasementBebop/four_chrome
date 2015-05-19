@@ -89,3 +89,17 @@ $('.ads-ad ul li').each(function() {
   	'</a> '
   );
 });
+
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if( request.message === "updated" ) {
+      console.log('foo');
+    }
+  }
+);
+
+
+
+
+
