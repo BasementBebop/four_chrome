@@ -23,6 +23,19 @@ $.fn.inlineEdit = function(replaceWith, connectWith) {
       elem.show();
     }
   });
+
+  replaceWith.blur(function() {
+    if ($(this).val() != "") {
+        connectWith.val($(this).val()).change();
+        elem.text($(this).val());
+    }
+    $(this).remove();
+
+    if (!$(elem).hasClass('ads-creative')) {
+      elem.css( "color", "rgb(26,13,171)" );
+    };
+    elem.show();
+  });
 }
 
 // Editable text sections
@@ -48,14 +61,14 @@ $('.ads-ad').each(function() {
   var uri_array = uri.split("http://");
 	var new_uri = uri_array.pop();
 	var decoded_uri = decodeURIComponent(new_uri);
-  $(this).find("h3:first").after(
-  	' <a href="http://' +
+  $(this).find("h3:first").before(
+  	'<a target="_blank" style="float: left" href="http://' +
   	decoded_uri +
   	'">' +
   	"<img src='" +
   	logo +
   	"'>" +
-  	'</a>'
+  	'</a> '
   );
 });
 
@@ -65,13 +78,14 @@ $('.ads-ad ul li').each(function() {
   var uri_array = uri.split("http://");
 	var new_uri = uri_array.pop();
 	var decoded_uri = decodeURIComponent(new_uri);
-  $(this).after(
-  	'<a href="http://' +
+  $(this).wrap("<li></li>");
+  $(this).before(
+  	'<a target="_blank" style="float: left" href="http://' +
   	decoded_uri +
   	'">' +
   	"<img src='" +
   	logo +
   	"'>" +
-  	'</a>'
+  	'</a> '
   );
 });
