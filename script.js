@@ -1,27 +1,46 @@
-// Edit text
-$('.ads-ad h3').click(function(event) {
-	event.preventDefault();
-	var replaceWith = $('<input name="temp" type="text"' + 'value="' + $(this).text() + '">');
-	var connectWith = $('input[name="hiddenField"]');
+// Edit text function
+$.fn.inlineEdit = function(replaceWith, connectWith) {
+  var replaceWith = $('<input type="text"' + 'value="' + $(this).text() + '">');
+  var connectWith = $('input[name="hiddenField"]');
   var elem = $(this);
 
-	elem.hide();
+  elem.hide();
   elem.after(replaceWith);
   replaceWith.focus();
 
-  replaceWith.blur(function() {
-    if ($(this).val() != "") {
-        connectWith.val($(this).val()).change();
-        elem.text($(this).val());
+  replaceWith.keypress(function(event) {
+    var key = (event.keyCode ? event.keyCode : event.which);
+    if (key == '13') {      
+      if ($(this).val() != "") {
+          connectWith.val($(this).val()).change();
+          elem.text($(this).val());
+      }
+      $(this).remove();
+
+      if (!$(elem).hasClass('ads-creative')) {
+        elem.css( "color", "rgb(26,13,171)" );
+      };
+      elem.show();
     }
-    $(this).remove();
-    elem.show();
-    elem.
-    console.log(elem);
   });
+}
+
+// Editable text sections
+$('.ads-ad h3').click(function(event) {
+  event.preventDefault();
+  $(this).inlineEdit();
 });
 
+$('.ads-ad ul li').click(function(event) {
+  event.preventDefault();
+  $(this).inlineEdit();
+});
 
+$('.ads-creative').click(function() {
+  $(this).inlineEdit();
+});
+
+// Icon that directs to stripped down link (ad titles)
 var logo = chrome.extension.getURL("images/adpearance.png");
 
 $('.ads-ad').each(function() {
@@ -29,7 +48,7 @@ $('.ads-ad').each(function() {
   var uri_array = uri.split("http://");
 	var new_uri = uri_array.pop();
 	var decoded_uri = decodeURIComponent(new_uri);
-  $(this).find("h3:first").append(
+  $(this).find("h3:first").after(
   	' <a href="http://' +
   	decoded_uri +
   	'">' +
@@ -40,13 +59,14 @@ $('.ads-ad').each(function() {
   );
 });
 
+// Icon that directs to stripped down link (ad subsections)
 $('.ads-ad ul li').each(function() {
   var uri = $(this).find("a").attr("href");
   var uri_array = uri.split("http://");
 	var new_uri = uri_array.pop();
 	var decoded_uri = decodeURIComponent(new_uri);
-  $(this).append(
-  	' <a href="http://' +
+  $(this).after(
+  	'<a href="http://' +
   	decoded_uri +
   	'">' +
   	"<img src='" +
